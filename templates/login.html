@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Secure Flask App{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">🔐 Secure Login</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <strong>Security Features:</strong>
+                    <ul class="mb-0">
+                        <li>CSRF Token Protection</li>
+                        <li>Input Validation & Sanitization</li>
+                        <li>Password Verification with Bcrypt</li>
+                        <li>Generic Error Messages (prevents username enumeration)</li>
+                        <li>Secure Session Management</li>
+                    </ul>
+                </div>
+                
+                <form method="POST" action="{{ url_for('login') }}" novalidate>
+                    {{ form.hidden_tag() }}  {# CSRF Token - Automatic Protection #}
+                    
+                    <div class="mb-3">
+                        {{ form.username.label(class="form-label") }}
+                        {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else "")) }}
+                        {% if form.username.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.username.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">Must be 3-80 characters, alphanumeric and underscores only</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else "")) }}
+                        {% if form.password.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">Minimum 8 characters</small>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                    </div>
+                </form>
+                
+                <hr>
+                <p class="text-center mb-0">
+                    Don't have an account? <a href="{{ url_for('register') }}">Register here</a>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Test Credentials Information -->
+        <div class="alert alert-warning mt-3">
+            <h5>🧪 Testing SQL Injection & XSS Prevention:</h5>
+            <p class="mb-1"><strong>Try these malicious inputs (they will be blocked):</strong></p>
+            <ul class="mb-0">
+                <li>Username: <code>admin' OR '1'='1</code></li>
+                <li>Username: <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code></li>
+                <li>Username: <code>user; DROP TABLE users--</code></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

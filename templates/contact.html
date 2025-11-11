@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - Secure Flask App{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0">📧 Contact Form (Secure)</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success">
+                    <strong>✅ Security Measures Implemented:</strong>
+                    <ul class="mb-0">
+                        <li><strong>Input Validation:</strong> All fields validated for correct format and length</li>
+                        <li><strong>SQL Injection Prevention:</strong> Keywords like SELECT, DROP, INSERT blocked</li>
+                        <li><strong>XSS Prevention:</strong> Scripts and malicious code filtered</li>
+                        <li><strong>CSRF Protection:</strong> Token-based form submission</li>
+                        <li><strong>Data Sanitization:</strong> Special characters escaped</li>
+                        <li><strong>Parameterized Queries:</strong> SQLAlchemy ORM protects database</li>
+                    </ul>
+                </div>
+                
+                <form method="POST" action="{{ url_for('contact') }}" novalidate>
+                    {{ form.hidden_tag() }}  {# CSRF Token - Critical for security #}
+                    
+                    <div class="mb-3">
+                        {{ form.name.label(class="form-label") }}
+                        {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else ""), placeholder="Enter your full name") }}
+                        {% if form.name.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.name.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">Letters and spaces only (2-100 characters)</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else ""), placeholder="your.email@example.com") }}
+                        {% if form.email.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">Valid email address required</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.phone.label(class="form-label") }}
+                        {{ form.phone(class="form-control" + (" is-invalid" if form.phone.errors else ""), placeholder="+1-234-567-8900") }}
+                        {% if form.phone.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.phone.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">Numbers, +, -, (, ), and spaces allowed (10-20 characters)</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.address.label(class="form-label") }}
+                        {{ form.address(class="form-control" + (" is-invalid" if form.address.errors else ""), placeholder="Enter your address") }}
+                        {% if form.address.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.address.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">5-200 characters</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.message.label(class="form-label") }}
+                        {{ form.message(class="form-control" + (" is-invalid" if form.message.errors else ""), rows="4", placeholder="Optional message (max 500 characters)") }}
+                        {% if form.message.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.message.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">Optional - Maximum 500 characters</small>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-info btn-lg text-white") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Testing Guide -->
+        <div class="alert alert-warning mt-4">
+            <h5>🧪 Test Security Features:</h5>
+            <p><strong>Try these inputs to see validation in action:</strong></p>
+            <ol class="mb-0">
+                <li><strong>SQL Injection:</strong> Name = <code>John'; DROP TABLE contacts--</code> ❌ Blocked</li>
+                <li><strong>XSS Attack:</strong> Name = <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code> ❌ Blocked</li>
+                <li><strong>Invalid Email:</strong> Email = <code>notanemail</code> ❌ Rejected</li>
+                <li><strong>Invalid Phone:</strong> Phone = <code>ABC123</code> ❌ Rejected</li>
+                <li><strong>Valid Input:</strong> All proper values ✅ Accepted</li>
+            </ol>
+        </div>
+    </div>
+</div>
+{% endblock %}

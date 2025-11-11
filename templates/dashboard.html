@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Secure Flask App{% endblock %}
+
+{% block content %}
+<div class="mt-5">
+    <h2>📊 Dashboard - Contact Submissions</h2>
+    <p class="lead">Welcome, <strong>{{ session.get('username') }}</strong>!</p>
+    
+    <div class="alert alert-info">
+        <strong>🔒 Security Note:</strong> This page is protected. All data retrieved using parameterized queries (SQLAlchemy ORM).
+    </div>
+    
+    {% if contacts %}
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contact in contacts %}
+                    <tr>
+                        <td>{{ contact.id }}</td>
+                        <td>{{ contact.name }}</td>
+                        <td>{{ contact.email }}</td>
+                        <td>{{ contact.phone }}</td>
+                        <td>{{ contact.address }}</td>
+                        <td>{{ contact.message if contact.message else '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p class="text-muted">Total contacts: {{ contacts|length }}</p>
+    {% else %}
+        <div class="alert alert-warning">
+            No contact submissions yet. Visit the <a href="{{ url_for('contact') }}">Contact Page</a> to add one.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}500 - Internal Server Error{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 text-center">
+        <div class="card shadow">
+            <div class="card-body p-5">
+                <h1 class="display-1 text-danger">500</h1>
+                <h2 class="mb-4">Internal Server Error</h2>
+                <p class="lead">Oops! Something went wrong on our end.</p>
+                <p class="text-muted">We're working to fix the issue. Please try again later.</p>
+                
+                <hr class="my-4">
+                
+                <div class="alert alert-danger text-start">
+                    <strong>🔒 Security Feature - Information Disclosure Prevention:</strong>
+                    <ul class="mb-0">
+                        <li>No stack traces or error details are displayed to users</li>
+                        <li>Sensitive server information is hidden from potential attackers</li>
+                        <li>Errors are logged internally for developers only</li>
+                        <li>Generic error message prevents reconnaissance attacks</li>
+                    </ul>
+                </div>
+                
+                <div class="alert alert-info text-start">
+                    <strong>For Developers:</strong>
+                    <p class="mb-0">Check the application logs for detailed error information. Never expose stack traces, database errors, or file paths to end users.</p>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                        <i class="bi bi-house"></i> Go to Homepage
+                    </a>
+                    <a href="javascript:history.back()" class="btn btn-secondary btn-lg">
+                        <i class="bi bi-arrow-left"></i> Go Back
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

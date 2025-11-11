@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Secure Flask App{% endblock %}
+
+{% block content %}
+<div class="jumbotron mt-5">
+    <h1 class="display-4">Welcome to Secure Flask Application</h1>
+    <p class="lead">This application demonstrates OWASP Secure Coding Practices</p>
+    <hr class="my-4">
+    <h2>Security Features Implemented:</h2>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">🛡️ 1. Secure Input Handling</h5>
+                    <p class="card-text">All user inputs are validated and sanitized using WTForms validators to prevent SQL Injection and XSS attacks.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">🔐 2. Parameterized Queries</h5>
+                    <p class="card-text">SQLAlchemy ORM is used for all database operations, providing built-in protection against SQL injection.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">🔒 3. CSRF Protection</h5>
+                    <p class="card-text">Flask-WTF CSRF tokens are enabled on all forms to prevent Cross-Site Request Forgery attacks.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">❌ 4. Secure Error Handling</h5>
+                    <p class="card-text">Custom error pages (404, 500, 403) prevent information disclosure and sensitive data exposure.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">🔑 5. Secure Password Storage</h5>
+                    <p class="card-text">Bcrypt hashing algorithm is used to securely store passwords in the database.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">🍪 6. Secure Session Management</h5>
+                    <p class="card-text">Session cookies are configured with secure flags (HttpOnly, Secure, SameSite) for enhanced security.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4">
+        <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}" role="button">Get Started - Register</a>
+        <a class="btn btn-secondary btn-lg" href="{{ url_for('contact') }}" role="button">Contact Us</a>
+    </div>
+</div>
+{% endblock %}
