@@ -2,45 +2,50 @@ pipeline {
     agent any
 
     environment {
-        // Optional: set any environment variables here
-        REPO_URL = 'https://github.com/yourusername/yourrepo.git'
-        BRANCH_NAME = 'main' // or master
+        VENV = "venv"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                echo 'Cloning Git repository...'
-                git branch: "${BRANCH_NAME}", url: "${REPO_URL}"
+                git branch: 'main', url: 'https://github.com/SultanUmarCheema/Flask-Lab07.git'
             }
         }
 
-        stage('Build') {
+        stage('Setup Python') {
             steps {
-                echo 'Building the project...'
-                // Add build commands here, e.g., for Maven: sh 'mvn clean install'
+                // Create virtual environment and install dependencies
+                sh """
+                python -m venv ${VENV}
+                . ${VENV}/Scripts/activate
+                pip install --upgrade pip
+                pip install -r requirements.txt
+                """
             }
         }
 
-        stage('Test') {
+        stage('Run App') {
             steps {
-                echo 'Running tests...'
-                // Add test commands here, e.g., sh 'mvn test'
+                // Run the Flask app in background
+                sh """
+                . ${VENV}/Scripts/activate
+                nohup python app.py &
+                sleep 10
+                """
             }
         }
 
-        stage('Deploy') {
+        stage('Smoke Test') {
             steps {
-                echo 'Deploying project...'
-                // Add deploy commands here if needed
+                // Simple check that app responds
+                sh """
+                curl -f http://127.0.0.1:5000 || exit 1
+                """
             }
         }
     }
 
     post {
-        always {
-            echo 'Pipeline finished'
-        }
         success {
             echo 'Pipeline succeeded!'
         }
